@@ -5,6 +5,7 @@ package com.vincentcodes.math;
 // (powered by FernFlower decompiler)
 //
 
+import java.util.Arrays;
 import java.util.function.Function;
 
 public class Matrix {
@@ -22,7 +23,6 @@ public class Matrix {
                 this.matrix[row][col] = 0.0;
             }
         }
-
     }
 
     public Matrix randomizeMut() {
@@ -243,10 +243,28 @@ public class Matrix {
                 this.matrix[row][col] = mat.matrix[row][col];
             }
         }
-
     }
 
-    public static double[][] getArrayFromMatrix(Matrix mat) {
+    public Vector toVector(){
+        if(cols != 1){
+            throw new IllegalStateException("A vector requires 1 column matrix. But you have: " + dimString());
+        }
+        Vector res = new Vector(rows);
+        for(int i = 0; i < rows; i++){
+            res.vect[i] = matrix[i][0];
+        }
+        return res;
+    }
+
+    public String dimString(){
+        return "(" + this.rows + ", " + this.cols + ")";
+    }
+
+    public String toString() {
+        return Arrays.deepToString(matrix);
+    }
+
+    public static double[][] to2DArray(Matrix mat) {
         double[][] var1 = new double[mat.rows][mat.cols];
 
         for(int row = 0; row < mat.rows; ++row) {
@@ -258,7 +276,7 @@ public class Matrix {
         return var1;
     }
 
-    public static Matrix getMatrixFromArray(double[][] mat) {
+    public static Matrix from2DArray(double[][] mat) {
         Matrix res = new Matrix(mat.length, mat[0].length);
 
         for(int row = 0; row < res.rows; ++row) {
@@ -270,7 +288,7 @@ public class Matrix {
         return res;
     }
 
-    public static Matrix getVectMatrixFromArray(double[] vect) {
+    public static Matrix fromVect(double[] vect) {
         Matrix res = new Matrix(vect.length, 1);
 
         for(int row = 0; row < res.rows; ++row) {
@@ -278,23 +296,5 @@ public class Matrix {
         }
 
         return res;
-    }
-
-    public String dimString(){
-        return "(" + this.rows + ", " + this.cols + ")";
-    }
-
-    public String toString() {
-        StringBuilder res = new StringBuilder();
-
-        for(int row = 0; row < this.matrix.length; ++row) {
-            for(int col = 0; col < this.matrix[0].length; ++col) {
-                res.append(this.matrix[row][col]).append(" ");
-            }
-
-            res.append("\n");
-        }
-
-        return res.toString();
     }
 }

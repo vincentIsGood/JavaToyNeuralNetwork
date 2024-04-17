@@ -26,13 +26,13 @@ public class TestXorCase {
 
         for(int i = 0; i < 1000000; i++){
             model.trainSingle(
-                    Matrix.getVectMatrixFromArray(inputs[i % 4]),
-                    Matrix.getVectMatrixFromArray(xorLabels[i % 4]));
+                    Matrix.fromVect(inputs[i % 4]),
+                    Matrix.fromVect(xorLabels[i % 4]));
             model.setLearningRate(model.getLearningRate()*0.9999999);
         }
 
         for(double[] input : inputs) {
-            System.out.println(input[0] + " xor " + input[1] + " = " + model.forward(Matrix.getVectMatrixFromArray(input)));
+            System.out.println(input[0] + " xor " + input[1] + " = " + model.forward(Matrix.fromVect(input)));
         }
     }
 }
