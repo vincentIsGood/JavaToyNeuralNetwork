@@ -237,6 +237,16 @@ public class Matrix {
         return res;
     }
 
+    public double sum(Function<Double, Double> func){
+        double sum = 0;
+        for(int row = 0; row < this.rows; ++row) {
+            for(int col = 0; col < this.cols; ++col) {
+                sum += func.apply(this.matrix[row][col]);
+            }
+        }
+        return sum;
+    }
+
     public void copy(Matrix mat) {
         for(int row = 0; row < this.rows; ++row) {
             for(int col = 0; col < this.cols; ++col) {
@@ -264,6 +274,7 @@ public class Matrix {
         return Arrays.deepToString(matrix);
     }
 
+    // ----------------- Static ----------------- //
     public static double[][] to2DArray(Matrix mat) {
         double[][] var1 = new double[mat.rows][mat.cols];
 

@@ -3,8 +3,6 @@ package com.vincentcodes.ml.layers;
 import com.vincentcodes.math.Matrix;
 import com.vincentcodes.ml.MLModel;
 
-import java.util.function.Function;
-
 public abstract class MLModelLayer {
     protected MLModel model;
     protected int layerNum;

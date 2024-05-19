@@ -26,8 +26,8 @@ public class TestXorCase {
 
         for(int i = 0; i < 1000000; i++){
             model.trainSingle(
-                    Matrix.fromVect(inputs[i % 4]),
-                    Matrix.fromVect(xorLabels[i % 4]));
+                    Matrix.fromVect(inputs[i % inputs.length]),
+                    Matrix.fromVect(xorLabels[i % inputs.length]));
             model.setLearningRate(model.getLearningRate()*0.9999999);
         }
 
