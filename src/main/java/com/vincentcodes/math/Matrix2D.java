@@ -5,15 +5,18 @@ package com.vincentcodes.math;
 import java.util.Arrays;
 import java.util.function.Function;
 
-public class Matrix {
+/**
+ * double[][] is slow
+ */
+public class Matrix2D {
     /**
      * Address the matrix by matrix[row][col] where row is y, col is x.
      */
     public double[][] matrix;
-    public int rows;
-    public int cols;
+    public final int rows;
+    public final int cols;
 
-    public Matrix(int rows, int cols) {
+    public Matrix2D(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         this.matrix = new double[rows][cols];
@@ -25,7 +28,7 @@ public class Matrix {
         }
     }
 
-    public Matrix randomizeMut() {
+    public Matrix2D randomizeMut() {
         for(int row = 0; row < this.rows; ++row) {
             for(int col = 0; col < this.cols; ++col) {
                 this.matrix[row][col] = Math.random();
@@ -34,9 +37,9 @@ public class Matrix {
         return this;
     }
 
-    public Matrix sub(Matrix mat) {
+    public Matrix2D sub(Matrix2D mat) {
         if (this.rows == mat.rows && this.cols == mat.cols) {
-            Matrix res = new Matrix(this.rows, this.cols);
+            Matrix2D res = new Matrix2D(this.rows, this.cols);
             for(int row = 0; row < this.rows; ++row) {
                 for(int col = 0; col < this.cols; ++col) {
                     res.matrix[row][col] = this.matrix[row][col] - mat.matrix[row][col];
@@ -47,9 +50,9 @@ public class Matrix {
             throw new IllegalArgumentException("Both size don't match: " + dimString() + ", " + mat.dimString());
         }
     }
-    public Matrix subMut(Matrix mat) {
+    public Matrix2D subMut(Matrix2D mat) {
         if (this.rows == mat.rows && this.cols == mat.cols) {
-            Matrix res = this;
+            Matrix2D res = this;
             for(int row = 0; row < this.rows; ++row) {
                 for(int col = 0; col < this.cols; ++col) {
                     res.matrix[row][col] = this.matrix[row][col] - mat.matrix[row][col];
@@ -61,8 +64,19 @@ public class Matrix {
         }
     }
 
-    public Matrix sub(double mat) {
-        Matrix res = new Matrix(this.rows, this.cols);
+    public Matrix2D sub(double mat) {
+        Matrix2D res = new Matrix2D(this.rows, this.cols);
+
+        for(int row = 0; row < this.rows; ++row) {
+            for(int col = 0; col < this.cols; ++col) {
+                res.matrix[row][col] = this.matrix[row][col] - mat;
+            }
+        }
+
+        return res;
+    }
+    public Matrix2D subMut(double mat) {
+        Matrix2D res = this;
 
         for(int row = 0; row < this.rows; ++row) {
             for(int col = 0; col < this.cols; ++col) {
@@ -73,9 +87,9 @@ public class Matrix {
         return res;
     }
 
-    public Matrix add(Matrix mat) {
+    public Matrix2D add(Matrix2D mat) {
         if (this.rows == mat.rows && this.cols == mat.cols) {
-            Matrix res = new Matrix(this.rows, this.cols);
+            Matrix2D res = new Matrix2D(this.rows, this.cols);
             for(int row = 0; row < this.rows; ++row) {
                 for(int col = 0; col < this.cols; ++col) {
                     res.matrix[row][col] = this.matrix[row][col] + mat.matrix[row][col];
@@ -87,9 +101,9 @@ public class Matrix {
             throw new IllegalArgumentException("Both size don't match: " + dimString() + ", " + mat.dimString());
         }
     }
-    public Matrix addMut(Matrix mat) {
+    public Matrix2D addMut(Matrix2D mat) {
         if (this.rows == mat.rows && this.cols == mat.cols) {
-            Matrix res = this;
+            Matrix2D res = this;
             for(int row = 0; row < this.rows; ++row) {
                 for(int col = 0; col < this.cols; ++col) {
                     res.matrix[row][col] = this.matrix[row][col] + mat.matrix[row][col];
@@ -102,8 +116,19 @@ public class Matrix {
         }
     }
 
-    public Matrix add(double num) {
-        Matrix res = new Matrix(this.rows, this.cols);
+    public Matrix2D add(double num) {
+        Matrix2D res = new Matrix2D(this.rows, this.cols);
+
+        for(int row = 0; row < this.rows; ++row) {
+            for(int col = 0; col < this.cols; ++col) {
+                res.matrix[row][col] = this.matrix[row][col] + num;
+            }
+        }
+
+        return res;
+    }
+    public Matrix2D addMut(double num) {
+        Matrix2D res = this;
 
         for(int row = 0; row < this.rows; ++row) {
             for(int col = 0; col < this.cols; ++col) {
@@ -114,11 +139,11 @@ public class Matrix {
         return res;
     }
 
-    public Matrix dot(Matrix mat) {
+    public Matrix2D dot(Matrix2D mat) {
         if (this.cols != mat.rows) {
             throw new IllegalArgumentException("Dot product requirement not met: " + this.dimString() + ", " + mat.dimString());
         }
-        Matrix res = new Matrix(this.rows, mat.cols);
+        Matrix2D res = new Matrix2D(this.rows, mat.cols);
         for(int row = 0; row < res.rows; ++row) {
             for(int col = 0; col < res.cols; ++col) {
                 double sum = 0.0;
@@ -133,13 +158,13 @@ public class Matrix {
         return res;
     }
 
-    public Matrix dotFlexible(Matrix mat) {
+    public Matrix2D dotFlexible(Matrix2D mat) {
         if(this.cols != mat.rows && this.rows == mat.rows){
             return transpose().dot(mat);
         }
         return dot(mat);
     }
-    public Matrix dotParamFlexible(Matrix mat) {
+    public Matrix2D dotParamFlexible(Matrix2D mat) {
         if(this.cols != mat.rows && (this.cols == mat.cols)){
             return dot(mat.transpose());
         }
@@ -147,9 +172,9 @@ public class Matrix {
     }
 
     // element-wise multiplication
-    public Matrix hadamard(Matrix mat) {
+    public Matrix2D hadamard(Matrix2D mat) {
         if (this.rows == mat.rows && this.cols == mat.cols) {
-            Matrix res = new Matrix(this.rows, this.cols);
+            Matrix2D res = new Matrix2D(this.rows, this.cols);
 
             for(int row = 0; row < this.rows; ++row) {
                 for(int col = 0; col < this.cols; ++col) {
@@ -162,9 +187,9 @@ public class Matrix {
             throw new IllegalArgumentException("Both size don't match: " + dimString() + ", " + mat.dimString());
         }
     }
-    public Matrix hadamardMut(Matrix mat) {
+    public Matrix2D hadamardMut(Matrix2D mat) {
         if (this.rows == mat.rows && this.cols == mat.cols) {
-            Matrix res = this;
+            Matrix2D res = this;
 
             for(int row = 0; row < this.rows; ++row) {
                 for(int col = 0; col < this.cols; ++col) {
@@ -178,8 +203,8 @@ public class Matrix {
         }
     }
 
-    public Matrix hadamard(double scalar) {
-        Matrix res = new Matrix(this.rows, this.cols);
+    public Matrix2D hadamard(double scalar) {
+        Matrix2D res = new Matrix2D(this.rows, this.cols);
 
         for(int row = 0; row < this.rows; ++row) {
             for(int col = 0; col < this.cols; ++col) {
@@ -189,8 +214,8 @@ public class Matrix {
 
         return res;
     }
-    public Matrix hadamardMut(double scalar) {
-        Matrix res = this;
+    public Matrix2D hadamardMut(double scalar) {
+        Matrix2D res = this;
 
         for(int row = 0; row < this.rows; ++row) {
             for(int col = 0; col < this.cols; ++col) {
@@ -212,10 +237,10 @@ public class Matrix {
      *
      * @link https://medium.com/@nghihuynh_37300/convolutional-neural-networks-for-image-recognition-7148a19f981f
      */
-    public Matrix convolve(Matrix kernel){
+    public Matrix2D convolve(Matrix2D kernel){
         return convolve(kernel, null);
     }
-    public Matrix convolve(Matrix kernel, ConvolutionOptions options){
+    public Matrix2D convolve(Matrix2D kernel, ConvolutionOptions options){
         if(kernel.cols != kernel.rows){
             throw new IllegalArgumentException("Kernel is not a square matrix");
         }
@@ -244,8 +269,8 @@ public class Matrix {
             even = 1;
         }
 
-        Matrix paddedMatrix = padSize > 0? this.padMatrix(padSize) : this;
-        Matrix resultMatrix = new Matrix(finalMatrixColSize, finalMatrixRowSize);
+        Matrix2D paddedMatrix = padSize > 0? this.padMatrix(padSize) : this;
+        Matrix2D resultMatrix = new Matrix2D(finalMatrixColSize, finalMatrixRowSize);
         for(int i = kernelMidPointRow, resI = 0; i < paddedMatrix.rows - kernelMidPointRow + even; i+=strideSize, resI++){
             for(int j = kernelMidPointCol, resJ = 0; j < paddedMatrix.cols - kernelMidPointCol + even; j+=strideSize, resJ++){
                 double weightedSum = 0;
@@ -266,7 +291,7 @@ public class Matrix {
      * @param {Reducer} reducer
      * @param {ConvolutionOptions} options
      */
-    public Matrix pooling(int filterSize, PoolingReducer reducer, ConvolutionOptions options){
+    public Matrix2D pooling(int filterSize, PoolingReducer reducer, ConvolutionOptions options){
         if(reducer == null){
             throw new Error("Reducer is required");
         }
@@ -290,8 +315,8 @@ public class Matrix {
             even = 1;
         }
 
-        Matrix paddedMatrix = padSize > 0? this.padMatrix(padSize) : this;
-        Matrix resultMatrix = new Matrix(finalMatrixColSize, finalMatrixRowSize);
+        Matrix2D paddedMatrix = padSize > 0? this.padMatrix(padSize) : this;
+        Matrix2D resultMatrix = new Matrix2D(finalMatrixColSize, finalMatrixRowSize);
         for(int i = kernelMidPointRow, resI = 0; i < paddedMatrix.rows - kernelMidPointRow + even; i+=strideSize, resI++){
             for(int j = kernelMidPointCol, resJ = 0; j < paddedMatrix.cols - kernelMidPointCol + even; j+=strideSize, resJ++){
                 reducer.init(filterSize*filterSize);
@@ -306,8 +331,8 @@ public class Matrix {
         return resultMatrix;
     }
 
-    public Matrix transpose() {
-        Matrix res = new Matrix(this.cols, this.rows);
+    public Matrix2D transpose() {
+        Matrix2D res = new Matrix2D(this.cols, this.rows);
 
         for(int row = 0; row < this.rows; ++row) {
             for(int col = 0; col < this.cols; ++col) {
@@ -326,8 +351,8 @@ public class Matrix {
      *  [4,5,6], -->  [6,5,4],
      *  [7,8,9]]      [3,2,1]]
      */
-    public Matrix flip180(){
-        Matrix resultMatrix = new Matrix(this.rows, this.cols);
+    public Matrix2D flip180(){
+        Matrix2D resultMatrix = new Matrix2D(this.rows, this.cols);
         for(int i = 0; i < this.rows; i++){
             for(int j = 0; j < this.cols; j++){
                 resultMatrix.matrix[i][j] = this.matrix[this.rows-1-i][this.cols-1-j];
@@ -342,8 +367,8 @@ public class Matrix {
      *                     [0 0 0]]
      * @param {number} padSize 
      */
-    public Matrix padMatrix(int padSize){
-        Matrix resultMatrix = new Matrix(this.rows + padSize*2, this.cols + padSize*2);
+    public Matrix2D padMatrix(int padSize){
+        Matrix2D resultMatrix = new Matrix2D(this.rows + padSize*2, this.cols + padSize*2);
         int currentRowSize = padSize;
         int currentColSize = padSize;
         for(int i = 0; i < resultMatrix.rows; i++){
@@ -368,8 +393,8 @@ public class Matrix {
     }
 
     // apply function in an element-wise manner
-    public Matrix applyFunction(Function<Double, Double> func) {
-        Matrix res = new Matrix(this.rows, this.cols);
+    public Matrix2D applyFunction(Function<Double, Double> func) {
+        Matrix2D res = new Matrix2D(this.rows, this.cols);
 
         for(int row = 0; row < this.rows; ++row) {
             for(int col = 0; col < this.cols; ++col) {
@@ -379,8 +404,8 @@ public class Matrix {
 
         return res;
     }
-    public Matrix applyFunctionMut(Function<Double, Double> func) {
-        Matrix res = this;
+    public Matrix2D applyFunctionMut(Function<Double, Double> func) {
+        Matrix2D res = this;
 
         for(int row = 0; row < this.rows; ++row) {
             for(int col = 0; col < this.cols; ++col) {
@@ -401,7 +426,7 @@ public class Matrix {
         return sum;
     }
 
-    public void copyFrom(Matrix mat) {
+    public void copyFrom(Matrix2D mat) {
         for(int row = 0; row < this.rows; ++row) {
             for(int col = 0; col < this.cols; ++col) {
                 this.matrix[row][col] = mat.matrix[row][col];
@@ -429,7 +454,7 @@ public class Matrix {
     }
 
     // ----------------- Static ----------------- //
-    public static double[][] to2DArray(Matrix mat) {
+    public static double[][] to2DArray(Matrix2D mat) {
         double[][] var1 = new double[mat.rows][mat.cols];
 
         for(int row = 0; row < mat.rows; ++row) {
@@ -441,8 +466,8 @@ public class Matrix {
         return var1;
     }
 
-    public static Matrix from2DArray(double[][] mat) {
-        Matrix res = new Matrix(mat.length, mat[0].length);
+    public static Matrix2D from2DArray(double[][] mat) {
+        Matrix2D res = new Matrix2D(mat.length, mat[0].length);
 
         for(int row = 0; row < res.rows; ++row) {
             for(int col = 0; col < res.cols; ++col) {
@@ -453,8 +478,8 @@ public class Matrix {
         return res;
     }
 
-    public static Matrix fromVect(double[] vect) {
-        Matrix res = new Matrix(vect.length, 1);
+    public static Matrix2D fromVect(double[] vect) {
+        Matrix2D res = new Matrix2D(vect.length, 1);
 
         for(int row = 0; row < res.rows; ++row) {
             res.matrix[row][0] = vect[row];

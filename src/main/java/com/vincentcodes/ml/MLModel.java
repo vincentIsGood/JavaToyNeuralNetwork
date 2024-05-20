@@ -1,6 +1,6 @@
 package com.vincentcodes.ml;
 
-import com.vincentcodes.math.Matrix;
+import com.vincentcodes.math.Matrix2D;
 import com.vincentcodes.ml.layers.MLModelLayer;
 
 import java.util.ArrayList;
@@ -20,17 +20,17 @@ public class MLModel {
         }
     }
 
-    public Matrix forward(Matrix input){
-        Matrix output = input;
+    public Matrix2D forward(Matrix2D input){
+        Matrix2D output = input;
         for(MLModelLayer layer : layers){
             output = layer.forward(output);
         }
         return output;
     }
 
-    public void trainSingle(Matrix input, Matrix label){
+    public void trainSingle(Matrix2D input, Matrix2D label){
         forward(input);
-        Matrix error = label;
+        Matrix2D error = label;
         for(int i = layers.size()-1; i >= 0; i--){
             MLModelLayer layer = layers.get(i);
             error = layer.backward(error);

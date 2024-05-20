@@ -115,8 +115,8 @@ public class Vector {
         return Math.sqrt(sum);
     }
 
-    public Matrix toMatrix(){
-        Matrix res = new Matrix(rows, 1);
+    public Matrix2D toMatrix(){
+        Matrix2D res = new Matrix2D(rows, 1);
         for(int i = 0; i < rows; i++){
             res.matrix[i][0] = vect[i];
         }

@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import com.vincentcodes.math.Matrix;
+import com.vincentcodes.math.Matrix2D;
 import com.vincentcodes.ml.MLModel;
 import com.vincentcodes.ml.layers.MLModelClassificationOutputLayer;
 import com.vincentcodes.ml.layers.MLModelFullyConnected;
@@ -33,13 +33,13 @@ public class TestClassificationCase {
 
         for(int i = 0; i < 1000000; i++){
             model.trainSingle(
-                    Matrix.fromVect(inputs[i % inputs.length]),
-                    Matrix.fromVect(labels[i % inputs.length]));
+                    Matrix2D.fromVect(inputs[i % inputs.length]),
+                    Matrix2D.fromVect(labels[i % inputs.length]));
             model.setLearningRate(model.getLearningRate()*0.9999999);
         }
 
         for(double[] input : inputs) {
-            System.out.println(Arrays.toString(input) + " => " + model.forward(Matrix.fromVect(input)));
+            System.out.println(Arrays.toString(input) + " => " + model.forward(Matrix2D.fromVect(input)));
         }
     }
 
@@ -76,20 +76,20 @@ public class TestClassificationCase {
 
         for(int i = 0; i < 1000000; i++){
             model.trainSingle(
-                    Matrix.fromVect(inputs[i % inputs.length]),
-                    Matrix.fromVect(labels[i % inputs.length]));
+                    Matrix2D.fromVect(inputs[i % inputs.length]),
+                    Matrix2D.fromVect(labels[i % inputs.length]));
             model.setLearningRate(model.getLearningRate()*0.9999999);
         }
 
         System.out.println("[use ecommerce, use cash, use online payment] => [youngster, elderly]");
         for(double[] input : inputs) {
-            System.out.println(Arrays.toString(input) + " => " + model.forward(Matrix.fromVect(input)));
+            System.out.println(Arrays.toString(input) + " => " + model.forward(Matrix2D.fromVect(input)));
         }
 
         for(double[] input : new double[][]{
             {1, 1, 0}, {0, 1, 1}
         }) {
-            System.out.println(Arrays.toString(input) + " => " + model.forward(Matrix.fromVect(input)));
+            System.out.println(Arrays.toString(input) + " => " + model.forward(Matrix2D.fromVect(input)));
         }
     }
 }

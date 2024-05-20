@@ -2,7 +2,7 @@ package com.vincentcodes.ml;
 
 import java.util.function.Function;
 
-import com.vincentcodes.math.Matrix;
+import com.vincentcodes.math.Matrix2D;
 
 public class ActivationFunctions{
     public static final Function<Double, Double> sigmoid = (x)-> 1/(1 + Math.exp(-x));
@@ -18,7 +18,7 @@ public class ActivationFunctions{
 
         public double sum;
         
-        public SoftMaxFunction setSumFromMatrix(Matrix matrix){
+        public SoftMaxFunction setSumFromMatrix(Matrix2D matrix){
             sum = matrix.sum((x) -> Math.exp(x));
             return this;
         }

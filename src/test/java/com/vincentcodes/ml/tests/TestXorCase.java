@@ -1,6 +1,6 @@
 package com.vincentcodes.ml.tests;
 
-import com.vincentcodes.math.Matrix;
+import com.vincentcodes.math.Matrix2D;
 import com.vincentcodes.ml.MLModel;
 import com.vincentcodes.ml.layers.MLModelFullyConnected;
 import com.vincentcodes.ml.layers.MLModelInputLayer;
@@ -26,13 +26,13 @@ public class TestXorCase {
 
         for(int i = 0; i < 1000000; i++){
             model.trainSingle(
-                    Matrix.fromVect(inputs[i % inputs.length]),
-                    Matrix.fromVect(xorLabels[i % inputs.length]));
+                    Matrix2D.fromVect(inputs[i % inputs.length]),
+                    Matrix2D.fromVect(xorLabels[i % inputs.length]));
             model.setLearningRate(model.getLearningRate()*0.9999999);
         }
 
         for(double[] input : inputs) {
-            System.out.println(input[0] + " xor " + input[1] + " = " + model.forward(Matrix.fromVect(input)));
+            System.out.println(input[0] + " xor " + input[1] + " = " + model.forward(Matrix2D.fromVect(input)));
         }
     }
 }

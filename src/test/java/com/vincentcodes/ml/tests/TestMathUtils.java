@@ -4,12 +4,12 @@ import com.vincentcodes.math.*;
 import org.junit.jupiter.api.Test;
 
 public class TestMathUtils {
-    private Matrix e = Matrix.from2DArray(new double[][]{{1,2}, {3,4}});
-    private Matrix f = Matrix.from2DArray(new double[][]{{1,2,3}, {4,5,6}, {7,8,9}});
-    private Matrix g = Matrix.from2DArray(new double[][]{{1, 2, 3}});
-    private Matrix h = Matrix.from2DArray(new double[][]{{1,2,3,4,5}, {6,7,8,9,10}, {11,12,13,14,15}, {16,17,18,19,20}, {21,22,23,24,25}});
-    private Matrix i = Matrix.from2DArray(new double[][]{{1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,16}});
-    private Matrix m = Matrix.from2DArray(new double[][]{{1,2,2,1}, {2,5,1,3}, {2,9,2,3}, {3,3,4,5}});
+    private Matrix2D e = Matrix2D.from2DArray(new double[][]{{1,2}, {3,4}});
+    private Matrix2D f = Matrix2D.from2DArray(new double[][]{{1,2,3}, {4,5,6}, {7,8,9}});
+    private Matrix2D g = Matrix2D.from2DArray(new double[][]{{1, 2, 3}});
+    private Matrix2D h = Matrix2D.from2DArray(new double[][]{{1,2,3,4,5}, {6,7,8,9,10}, {11,12,13,14,15}, {16,17,18,19,20}, {21,22,23,24,25}});
+    private Matrix2D i = Matrix2D.from2DArray(new double[][]{{1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,16}});
+    private Matrix2D m = Matrix2D.from2DArray(new double[][]{{1,2,2,1}, {2,5,1,3}, {2,9,2,3}, {3,3,4,5}});
 
     @Test
     public void test_clipping(){
@@ -39,5 +39,22 @@ public class TestMathUtils {
         /*
         [[5,3],[9,5]]
          */
+    }
+
+    // ------------ For 3D ------------ //
+    // Results should be kinda the same as the above
+    @Test
+    public void test_matrix3D_convolution(){
+        MatrixStacked3D a = MatrixStacked3D.fromMatrix2D(new Matrix2D[]{h, h, h});
+        MatrixStacked3D b = MatrixStacked3D.fromMatrix2D(new Matrix2D[]{f, f, f});
+        MatrixStacked3D c = MatrixStacked3D.fromMatrix2D(new Matrix2D[]{f, f, f});
+        //System.out.println(a.convolve(b).collapseBySum());
+        System.out.println(a.convolveMultiple(new MatrixStacked3D[]{b, c}));
+    }
+
+    @Test
+    public void test_matrix3D_pooling(){
+        MatrixStacked3D a = MatrixStacked3D.fromMatrix2D(new Matrix2D[]{m, m, m});
+        System.out.println(a.pooling(2, new PoolingReducer.MaxPooling(), ConvolutionOptions.builder().strideSize(2).build()));
     }
 }
