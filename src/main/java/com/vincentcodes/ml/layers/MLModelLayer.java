@@ -1,13 +1,14 @@
 package com.vincentcodes.ml.layers;
 
 import com.vincentcodes.math.Matrix2D;
+import com.vincentcodes.math.MatrixStacked3D;
 import com.vincentcodes.ml.MLModel;
 
 public abstract class MLModelLayer {
-    protected MLModel model;
-    protected int layerNum;
+    public MLModel model;
+    public int layerNum;
 
-    protected Matrix2D output;
+    public MatrixStacked3D output;
 
     public void setup(MLModel model, int layerNum){
         this.model = model;
@@ -17,10 +18,10 @@ public abstract class MLModelLayer {
     /**
      * @return the calculated values (after z (sum) and g (activation func))
      */
-    public abstract Matrix2D forward(Matrix2D prevLayerInput);
+    public abstract MatrixStacked3D forward(MatrixStacked3D prevLayerInput);
 
     /**
      * @return error calculated from this layer
      */
-    public abstract Matrix2D backward(Matrix2D nextLayerError);
+    public abstract MatrixStacked3D backward(MatrixStacked3D nextLayerError);
 }

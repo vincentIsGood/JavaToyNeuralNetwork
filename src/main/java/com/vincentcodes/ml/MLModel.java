@@ -1,6 +1,7 @@
 package com.vincentcodes.ml;
 
 import com.vincentcodes.math.Matrix2D;
+import com.vincentcodes.math.MatrixStacked3D;
 import com.vincentcodes.ml.layers.MLModelLayer;
 
 import java.util.ArrayList;
@@ -21,7 +22,14 @@ public class MLModel {
     }
 
     public Matrix2D forward(Matrix2D input){
-        Matrix2D output = input;
+        MatrixStacked3D output = MatrixStacked3D.fromMatrix2D(input);
+        for(MLModelLayer layer : layers){
+            output = layer.forward(output);
+        }
+        return output.matrices[0];
+    }
+    public MatrixStacked3D forward(MatrixStacked3D input){
+        MatrixStacked3D output = input;
         for(MLModelLayer layer : layers){
             output = layer.forward(output);
         }
@@ -30,7 +38,7 @@ public class MLModel {
 
     public void trainSingle(Matrix2D input, Matrix2D label){
         forward(input);
-        Matrix2D error = label;
+        MatrixStacked3D error = MatrixStacked3D.fromMatrix2D(label);
         for(int i = layers.size()-1; i >= 0; i--){
             MLModelLayer layer = layers.get(i);
             error = layer.backward(error);

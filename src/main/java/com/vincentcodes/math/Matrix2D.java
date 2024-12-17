@@ -269,7 +269,7 @@ public class Matrix2D {
             even = 1;
         }
 
-        Matrix2D paddedMatrix = padSize > 0? this.padMatrix(padSize) : this;
+        Matrix2D paddedMatrix = padSize > 0? this.pad(padSize) : this;
         Matrix2D resultMatrix = new Matrix2D(finalMatrixColSize, finalMatrixRowSize);
         for(int i = kernelMidPointRow, resI = 0; i < paddedMatrix.rows - kernelMidPointRow + even; i+=strideSize, resI++){
             for(int j = kernelMidPointCol, resJ = 0; j < paddedMatrix.cols - kernelMidPointCol + even; j+=strideSize, resJ++){
@@ -315,7 +315,7 @@ public class Matrix2D {
             even = 1;
         }
 
-        Matrix2D paddedMatrix = padSize > 0? this.padMatrix(padSize) : this;
+        Matrix2D paddedMatrix = padSize > 0? this.pad(padSize) : this;
         Matrix2D resultMatrix = new Matrix2D(finalMatrixColSize, finalMatrixRowSize);
         for(int i = kernelMidPointRow, resI = 0; i < paddedMatrix.rows - kernelMidPointRow + even; i+=strideSize, resI++){
             for(int j = kernelMidPointCol, resJ = 0; j < paddedMatrix.cols - kernelMidPointCol + even; j+=strideSize, resJ++){
@@ -360,6 +360,28 @@ public class Matrix2D {
         }
         return resultMatrix;
     }
+
+    /**
+     * CNN convolution specific dilation
+     *
+     * 1,2    1 0 2
+     * 3,4 -> 0 0 0
+     *        3 0 4
+     *
+     * @link https://towardsdatascience.com/understanding-2d-dilated-convolution-operation-with-examples-in-numpy-and-tensorflow-with-d376b3972b25
+     */
+    public Matrix2D dilate(int size){
+        if(size < 0){
+            throw new IllegalArgumentException("Stride size must be larger than or equal to 0");
+        }
+        Matrix2D result = new Matrix2D((this.rows*size)+(this.rows+size), (this.cols*size)+(this.cols+size));
+        for(int i = 0; i < this.rows; i++){
+            for(int j = 0; j < this.cols; j++){
+                result.matrix[size+i*(size+1)][size+j*(size+1)] = this.matrix[i][j];
+            }
+        }
+        return result;
+    }
     
     /**
      * [[0]] by size 1 => [[0 0 0],
@@ -367,7 +389,7 @@ public class Matrix2D {
      *                     [0 0 0]]
      * @param {number} padSize 
      */
-    public Matrix2D padMatrix(int padSize){
+    public Matrix2D pad(int padSize){
         Matrix2D resultMatrix = new Matrix2D(this.rows + padSize*2, this.cols + padSize*2);
         int currentRowSize = padSize;
         int currentColSize = padSize;

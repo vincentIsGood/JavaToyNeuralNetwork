@@ -20,6 +20,7 @@ public interface PoolingReducer {
             return this.max;
         }
     }
+
     class AvgPooling implements PoolingReducer{
         private double avg;
         private int len;

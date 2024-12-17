@@ -57,4 +57,10 @@ public class TestMathUtils {
         MatrixStacked3D a = MatrixStacked3D.fromMatrix2D(new Matrix2D[]{m, m, m});
         System.out.println(a.pooling(2, new PoolingReducer.MaxPooling(), ConvolutionOptions.builder().strideSize(2).build()));
     }
+
+    @Test
+    public void test_matrix3D_flatten(){
+        MatrixStacked3D a = MatrixStacked3D.fromMatrix2D(new Matrix2D[]{e, e, e});
+        System.out.println(a.flatten());
+    }
 }
